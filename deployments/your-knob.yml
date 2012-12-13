@@ -1,0 +1,4 @@
+---
+application:
+  root: <%= ENV['OPENSHIFT_REPO_DIR'] %>
+  env: development
