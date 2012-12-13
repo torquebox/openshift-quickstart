@@ -32,10 +32,24 @@
         <extension module="org.jboss.as.web"/>
         <extension module="org.jboss.as.webservices"/>
         <extension module="org.jboss.as.weld"/>
+        <extension module="org.torquebox.bootstrap"/>
+        <extension module="org.torquebox.core"/>
+        <extension module="org.torquebox.cdi"/>
+        <extension module="org.torquebox.jobs"/>
+        <extension module="org.torquebox.messaging"/>
+        <extension module="org.torquebox.security"/>
+        <extension module="org.torquebox.services"/>
+        <extension module="org.torquebox.stomp"/>
+        <extension module="org.torquebox.web"/>
+        <extension module="org.projectodd.polyglot.hasingleton"/>
+        <extension module="org.projectodd.polyglot.cache"/>
+        <extension module="org.projectodd.polyglot.stomp"/>
     </extensions>
     
     <system-properties>
        <property name="org.apache.coyote.http11.Http11Protocol.COMPRESSION" value="on"/>
+       <property name="org.apache.tomcat.util.http.ServerCookie.FWD_SLASH_IS_SEPARATOR" value="false"/>
+       <property name="org.apache.tomcat.util.net.WAIT_FOR_THREAD" value="false"/>
     </system-properties>
 
     <management>
@@ -186,9 +200,9 @@
                     <locking isolation="REPEATABLE_READ"/>
                 </replicated-cache>
             </cache-container>
-            <cache-container name="web" aliases="standard-session-cache" default-cache="repl">
+            <cache-container name="web" aliases="polyglot torquebox standard-session-cache" default-cache="repl">
                 <transport lock-timeout="60000"/>
-                <replicated-cache name="repl" mode="ASYNC" batching="true">
+                <replicated-cache name="repl" mode="ASYNC" batching="true" start="EAGER">
                     <file-store/>
                 </replicated-cache>
                 <replicated-cache name="sso" mode="SYNC" batching="true"/>
@@ -199,14 +213,14 @@
             <cache-container name="ejb" aliases="sfsb sfsb-cache" default-cache="repl">
                 <transport lock-timeout="60000"/>
                 <replicated-cache name="repl" mode="ASYNC" batching="true">
-                    <eviction strategy="LRU"/>
+                    <eviction strategy="LRU" max-entries="10000"/>
                     <file-store/>
                 </replicated-cache>
                 <!-- Clustered cache used internally by EJB subsytem for managing the client-mapping(s) of
                 the socketbinding referenced by the EJB remoting connector -->
                 <replicated-cache name="remote-connector-client-mappings" mode="SYNC" batching="true"/>
                 <distributed-cache name="dist" mode="ASYNC" batching="true">
-                    <eviction strategy="LRU"/>
+                    <eviction strategy="LRU" max-entries="10000"/>
                     <file-store/>
                 </distributed-cache>
             </cache-container>
@@ -496,6 +510,18 @@
             </endpoint-config>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-bootstrap:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-core:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-cdi:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-jobs:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-messaging:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-security:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-services:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-stomp:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:torquebox-web:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:polyglot-hasingleton:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:polyglot-cache:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:polyglot-stomp:1.0" socket-binding="stomp"/>
     </profile>
 
     <interfaces>
@@ -528,5 +554,6 @@
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
+        <socket-binding name="stomp" port="8675"/>
     </socket-binding-group>
 </server>
