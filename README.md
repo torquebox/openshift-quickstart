@@ -1,8 +1,8 @@
 TorqueBox on OpenShift
 =========================
 
-Here is a quick way to try out your Leiningen-based Clojure
-application running in TorqueBox on OpenShift.
+Here is a quick way to try out your Ruby application running in
+TorqueBox on OpenShift.
 
 By default, this quickstart will install the latest incremental
 version of TorqueBox. You can specify a different version by tweaking
