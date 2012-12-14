@@ -48,5 +48,5 @@ export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules
 
 # Run bundle install
 if [ ! -d "${OPENSHIFT_REPO_DIR}/.bundle" ] && [ -f "${OPENSHIFT_REPO_DIR}/Gemfile" ]; then
-    cd "${OPENSHIFT_REPO_DIR}" && ${JRUBY_HOME}/bin/jruby -J-Xmx256m -S bundle install
+    cd "${OPENSHIFT_REPO_DIR}" && ${JRUBY_HOME}/bin/jruby -J-Xmx256m -J-Dhttps.protocols=SSLv3 -S bundle install
 fi
