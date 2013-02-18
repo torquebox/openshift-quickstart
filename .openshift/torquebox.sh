@@ -46,7 +46,7 @@ export JRUBY_HOME=$TORQUEBOX_HOME/jruby
 export PATH=$JRUBY_HOME/bin:$PATH
 
 # Insert the TorqueBox modules before the jbossas-7 ones
-export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules
+export JBOSS_MODULEPATH_ADD=$TORQUEBOX_HOME/jboss/modules/system/layers/base:$TORQUEBOX_HOME/jboss/modules
 
 function bundle_install() {
     if [ ! -d "${OPENSHIFT_REPO_DIR}/.bundle" ] && [ -f "${OPENSHIFT_REPO_DIR}/Gemfile" ]; then
